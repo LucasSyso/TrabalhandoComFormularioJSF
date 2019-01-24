@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html 	xmlns="http://www.w3.org/1999/xhtml"
+	  	xmlns:f="http://xmlns.jcp.org/jsf/core"
+		xmlns:h="http://xmlns.jcp.org/jsf/html"
+		xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+		xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
+		
+		<!-- 
+			Para usarmos atributos do html5 no jsf, utilizaremos esta uri = xmlns:pt="http://xmlns.jcp.org/jsf/passthrough" 
+			Esses atributos serão ignorados no processamento dos elementos do JSF.
+			
+			Existe a possibilidade de usarmos recursos do JSF em arquivos feitos em HTML5.
+			Seria o processo contrário, neste caso, colocariamos na tag html a seguinte uri = xmlns:jsf="http://smlns.jcp.org/jsf"
+		-->
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+	<title>Cadastro</title>
+	<h:outputScript library="scripts" name="js.js"/>
+	<h:outputStylesheet library="" name=""/>
+</h:head>
+<h:body>
+	<h:form id="form">
+		<!-- 
+			O formulário abaixo será criado como uma tabela com duas colunas.
+			As tabelas, neste caso, possui o header, as colunas e o footer. 
+		-->
+		<h:panelGrid columns="2">
+			<f:facet name="header">
+				Cadastro de Usuário
+			</f:facet>
+			
+			<h:outputLabel value="Nome:"/>
+			<h:panelGroup>
+				<h:inputText id="nome" value="#{cadastro.nome}" pt:placeholder="Coloque aqui seu nome"/>
+				<h:outputText id="erroNome" value=" O campo nome não pode ficar vazio!!" style="color:red; visibility: hidden"/>
+			</h:panelGroup>
+			
+			<h:outputLabel value="E-mail:"/>
+			<h:panelGroup>
+				<h:inputText id="email" value="#{cadastro.email}" pt:placeholder="Coloque aqui seu e-mail" pt:type="email"/>
+				<h:outputText id="erroEmail" value=" O campo e-mail está fora do padrão!!" style="color:red; visibility: hidden"/>
+			</h:panelGroup>
+			
+			<h:outputLabel value="Senha:"/>
+			<h:inputSecret id="senha1" value="#{cadastro.senha1}" pt:placeholder="Digite sua senha"/>
+			
+			<h:outputLabel value="Confirmação de senha:"/>
+			<h:panelGroup>
+				<h:inputSecret id="senha2" value="#{cadastro.senha2}" pt:placeholder="Repita a mesma senha"/>
+				<h:outputText id="erroSenhas" value=" Os campos de senha estão diferentes!!" style="color:red; visibility: hidden"/>
+			</h:panelGroup>
+			
+			<h:outputLabel value="Sexo:"/>
+			<h:panelGroup>
+				<h:selectOneRadio value="#{cadastro.sexo}">
+					<f:selectItem id="m" itemValue="M" itemLabel="Masculino"/>
+					<f:selectItem id="f" itemValue="F" itemLabel="Feminino"/>
+				</h:selectOneRadio>
+				<h:outputText id="erroSexo" value=" Escolha o sexo!!" style="color:red; visibility: hidden"/>
+			</h:panelGroup>
+			
+			<h:outputLabel value="Deseja receber e-mails?"/>
+			<h:selectBooleanCheckbox value="#{cadastro.receberEmails}"/>
+			
+			<h:outputLabel value="Observações:"/>
+			<h:inputTextarea value="#{cadastro.observacoes}" rows="4" cols="30"/>
+			
+			<h:outputLabel value="Linguagens de programação:"/>
+			<h:panelGroup>
+				<h:selectManyCheckbox value="#{cadastro.linguagens}"><!-- Esta tag somente guarda seus valores em atributos do tipo array ou semelhantes -->
+					<f:selectItems value="#{cadastro.listaLinguagens}" var="l" 
+						itemValue="#{l.id}" itemLabel="#{l.nome}"/>
+				</h:selectManyCheckbox>
+				<h:outputText id="erroLinguagens" value=" Escolha pelo menos uma linguagem!!" style="color:red; visibility: hidden"/>
+			</h:panelGroup>
+		</h:panelGrid>
+		
+		<!-- Foi colocado o return antes do nome da função para se tornar uma condicional para o atributo 'action'.
+			Caso seja 'true', o usuário será direcionado à página do outCome 'info', caso 'false' não será direcionado. -->
+		<h:commandButton value="Cadastrar" action="info" onclick="return validaFormulario()"/>
+	</h:form>
+</h:body>
+</html>
